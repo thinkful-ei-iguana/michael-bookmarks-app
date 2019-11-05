@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="wireframe.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Michael's Bookmarks App</title>
+</head>
+<body>
+  <header>Wicked Booksmart</header>
+  <main>
+    <section class="navSection">
+      <form>
+        <button class="newBookmark">+New Bookmark</button>
+        <div class="dropdown">
+          <button class="dropbtn" id="dropdown">Filter By</button>
+            <div class="dropdown-content">
+              <a href="#">0 Star</a>
+              <a href="#">1 Star</a>
+              <a href="#">2 Star</a>
+              <a href="#">3 Star</a>
+              <a href="#">4 Star</a>
+              <a href="#">5 Star</a>
+            </div>
+        </div>
+      </form>
+    </section>
+    <section class="results">
+      <style>header,form,body,footer,div{
+        border: 1px solid grey;
+        background: lightgrey;
+        margin: auto;
+        text-align: center;
+      }
+      .headline{
+        display: inline-block;
+      }
+      h2{
+        height:30px;
+        display: inline-block;
+      }
+      .bookmarkExpanded{
+        height:180px;
+      }
+      </style>
+      <div class="bookmarkExpanded" id="x56w">
+        <div class="headline">
+          <h2>Title 1</h2><h2>Delete</h2>
+        </div>
+        <div class="${id}${description}">
+          <p>Description here</p>
+        </div>
+      </div>
+      <div class="bookmark" id="id#2">
+        <h2>Another Title</h2><h2>5 Stars</h2>
+      </div>
+    </section>
+    <code>
+      const store = {
+        bookmarks: [
+          {
+            id: 'x56w',
+            title: 'Title 1',
+            rating: 3,
+            url: 'http://www.title1.com',
+            description: 'lorem ipsum dolor sit',
+            expanded: false
+          },
+          {
+            id: '6ffw',
+            title: 'Title 2',
+            rating: 5,
+            url: 'http://www.title2.com',
+            description: 'dolorum tempore deserunt',
+            expanded: false
+          } 
+          ...
+        ],
+        adding: false,
+        error: null,
+        filter: 0
+      };
+    </code>
+  </main>
+  <footer></footer>
+  <script src="index.js" type="module"></script>
+</body>
+</html>
