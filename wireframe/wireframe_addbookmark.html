@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="wireframe.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Michael's Bookmarks App</title>
+</head>
+<body>
+  <header>Wicked Booksmart</header>
+  <main>
+    <section class="navSection">
+      <form>
+        <button class="newBookmark">+New Bookmark</button>
+        <div class="dropdown">
+          <button class="dropbtn" id="dropdown">Filter By</button>
+            <div class="dropdown-content">
+              <a href="#">0 Star</a>
+              <a href="#">1 Star</a>
+              <a href="#">2 Star</a>
+              <a href="#">3 Star</a>
+              <a href="#">4 Star</a>
+              <a href="#">5 Star</a>
+            </div>
+        </div>
+      </form>
+    </section>
+    <section class="results">
+        <style>.bookmark h2{box-sizing: border-box;
+            display: inline-block;
+            border: 1px solid grey;
+            width: 50%;
+            height: 30px;
+            margin: 0;
+            }
+          </style>
+      <div class="bookmark" id="x56w">
+        <h2>Title 1</h2><h2>3 Stars</h2>
+      </div>
+      <div class="bookmark" id="id#2">
+        <h2>Another Title</h2><h2>5 Stars</h2>
+      </div>
+    </section>
+    <code>
+        const store = {
+          bookmarks: [...],
+          adding: true,
+          error: null,
+          filter: 0
+        };
+    </code>
+  </main>
+  <footer></footer>
+  <script src="index.js" type="module"></script>
+</body>
+</html>
