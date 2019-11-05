@@ -1,3 +1,49 @@
-.checked{
-    color: orange;
+@media only screen and (max-width:320px){
+    header{
+        width: 100%;
+        text-align: center;
+
+    }
+    header .headerNav{
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+@media only screen and (max-width: 1024px){
+    header{
+        width: 100%;
+        text-align: center;
+
+    }
+    header .headerNav{
+        justify-content: center;
+        text-align: center;
+    }
+    .newBookmarkFormArea{
+        margin-left: auto;
+        margin-right: auto;
+        justify-content: center;
+    }
+    .newBookmarkForm{
+        margin: auto;
+        justify-content: flex-start;
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        border: 3px solid darkgrey;
+        background-color: grey;
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.newBookmarkForm{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    border: 3px solid darkgrey;
+    background-color: grey;
 }

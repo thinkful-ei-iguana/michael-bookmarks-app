@@ -14,10 +14,16 @@ const addNewBookmark = function(){
 const renderNewBookmarkForm = function(){
   $('.newBookmarkFormArea').html(`
     <form class="newBookmarkForm">
-      <label for="newBookmarkURL">Add a New Bookmark</label>
+      <label for="newBookmarkTitle>New Bookmark:</label>
+      <input name="newBookmarkTitle" id="newBookmarkTitle">
+      <label for="newBookmarkURL">URL:</label>
       <input name="newBookmarkURL" id="newBookmarkURL">
-      <button type="submit">Cancel</button>
-      <button id="confirmAdd" type="submit">Add</button>
+      <input name="newBookmarkRating" id="newBookmarkRating>
+      <input name="urlDescription" id="urlDescription">
+      <div class="formButtons">
+        <button type="submit">Cancel</button>
+        <button id="confirmAdd" type="submit">Add</button>
+      </div>
     </form>
   `);
 };
@@ -46,5 +52,6 @@ const render = function(){
 
 export default {
   bindEventListeners,
-  render
+  render,
+  renderNewBookmarkForm
 };
