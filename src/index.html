@@ -10,25 +10,11 @@
 <body>
   <header>
     Wicked Booksmart
-    <button class="new">Add New Bookmark</button>
+    <button id="newBookmark">Add New Bookmark</button>
     <!-- opens form to create a new bookmark -->
-    <button class="filter" name="filter">Filter By Rating:
-    <select class="filter">
-    <option value =""></option>
-      <span class="fa fa-star checked"></span>
-    <span class="fa fa-star checked"></span>
-    <span class="fa fa-star"></span>
-    <span class="fa fa-star"></span>
-    </select> 
     <select class="filter" name="filter">
         <option value="">Filter by minimum rating</option>
-        <option value="5">
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-        </option>
+        <option value="5">5</option>
         <option value="4">4</option>
         <option value="3">3</option>
         <option value="2">2</option>
@@ -38,9 +24,9 @@
     by rating -->
   </header>
   <main>
-
+    <section class="newBookmarkFormArea"></section>
+    <section class="bookmarks"></section>
   </main>
   <footer></footer>
-  <script src="index.js" type="module"></script>
 </body>
 </html>
