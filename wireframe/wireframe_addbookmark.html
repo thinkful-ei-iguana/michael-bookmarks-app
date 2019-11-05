@@ -11,8 +11,7 @@
   <header>Wicked Booksmart</header>
   <main>
     <section class="navSection">
-      <form>
-        <button class="newBookmark">+New Bookmark</button>
+        <button class="newBookmarkButton">+New Bookmark</button>
         <div class="dropdown">
           <button class="dropbtn" id="dropdown">Filter By</button>
             <div class="dropdown-content">
@@ -24,7 +23,14 @@
               <a href="#">5 Star</a>
             </div>
         </div>
-      </form>
+        <form class="newBookmarkForm">
+          <label name="URL" for="bookmarkURL">Add New Bookmark:</label>
+          <input id="bookmarkURL" placeholder="enter bookmark url">
+          <div >
+            <input name="rating" id="ratingInput" placeholder="5">
+            <input id="description" placeholder="link description here (optional)">
+          </div>
+        </form>
     </section>
     <section class="results">
         <style>.bookmark h2{box-sizing: border-box;
