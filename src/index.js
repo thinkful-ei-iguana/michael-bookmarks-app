@@ -7,10 +7,7 @@ import store from './store';
 const main = function(){
   api.getBookmarks()
     .then(bookmarks => {
-      console.log(bookmarks);
-      console.log(store.storeObj.bookmarks);
       store.storeObj.bookmarks = bookmarks;
-      console.log(store.storeObj.bookmarks);
       handleFeatures.render();
     });
   handleFeatures.bindEventListeners();

@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import api from './api';
 import store from './store';
+import cuid from 'cuid';
 
 //inserts form html when form button is pressed.
 const addNewBookmark = function(){
@@ -14,7 +15,7 @@ const addNewBookmark = function(){
 //new bookmark form html
 const renderNewBookmarkForm = function(){
   $('.newBookmarkFormArea').html(`
-    <form class="newBookmarkForm">
+    <form name="newBookmarkForm"class="newBookmarkForm">
       <label for="newBookmarkTitle">New Bookmark:</label>
       <input name="title" id="newBookmarkTitle">
       <label for="newBookmarkURL">URL:</label>
@@ -38,14 +39,28 @@ const renderNewBookmarkForm = function(){
 };
 
 //serialize form data function
-$.fn.extend({
-  serializeJson: function(){
-    const formData = new FormData(this[0]);
-    const obj = {};
-    formData.forEach((val, name) => obj[name] = val);
-    return JSON.stringify(obj);
-  }
-});
+// $.fn.extend({
+//   serializeJson: function(){
+//     const formData = new FormData(this[0]);
+//     const obj = {};
+//     formData.forEach((val, name) => obj[name] = val);
+//     return JSON.stringify(obj);
+//   }
+// });
+
+const serializeJson = function() {
+  // const formData = new FormData(form);
+  // const o = {};
+  // formData.forEach((val, name) => o[name] = val);
+  // return JSON.stringify(o);
+  return {
+    "title": $('#newBookmarkTitle').val(),
+    "desc": $('#urlDescription').val(),
+    "url": $('#newBookmarkURL').val(),
+    "id": cuid(),
+    "rating": $('#newBookmarkRating').val(),
+  };
+};
 
 const handleNewBookmarkSubmit = function(event){
   $(event.target).serializeJson();
@@ -53,10 +68,10 @@ const handleNewBookmarkSubmit = function(event){
   
 //handles confirm of bookmark by removing form html
 const confirmAdd = function(){
-  $('.newBookmarkFormArea').on('submit', '#confirmAdd', function(event){
+  $('.newBookmarkFormArea').on('click', '#confirmAdd', function(event){
     event.preventDefault();
     console.log('Heard you want to add this bookmark');
-    handleNewBookmarkSubmit(event);
+    console.log(serializeJson());
   });
 };
 
