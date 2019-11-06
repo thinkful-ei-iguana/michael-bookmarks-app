@@ -16,11 +16,17 @@ const store = {
       description: 'dolorum tempore deserunt',
       expanded: false
     } 
-    ...
   ],
   adding: false,
   error: null,
   filter: 0
 };
 
-export default {};
+const addBookmark = function(){
+  console.log(bookmark);
+  console.log(store);
+}
+
+export default {
+  addBookmark,
+};
