@@ -28,7 +28,12 @@ const getBookmarks = function(){
 
 //newData needs to be formatted as an object that we can post in
 //the following format:
-
+//{ "title": inputTitle,
+//  "desc": inputDesc,
+//  "rating": inputRating,
+//  "url": inputURL
+//}
+  
 const createBookmark = function(newData){
   let newBookmark = JSON.stringify(newData);
  

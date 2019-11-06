@@ -7,8 +7,11 @@ const main = function(){
   api.getBookmarks()
     .then(bookmarks => {
       console.log(bookmarks);
+      // bookmarks.foreach((bookmark) => store.addBookmark(bookmark));
+      handleFeatures.render();
     });
   handleFeatures.bindEventListeners();
+  handleFeatures.render();
 };
 
 $(main);
