@@ -3,12 +3,14 @@ import api from './api';
 import store from './store';
 import cuid from 'cuid';
 
+
 //inserts form html when form button is pressed.
 const addNewBookmark = function(){
   $('#newBookmark').on('click', function(event){
     event.preventDefault();
     console.log('I heard the new bookmark button get pressed');
     renderNewBookmarkForm();
+    //need to add button disable functionality
   });
 };
 
@@ -70,10 +72,18 @@ const handleNewBookmarkSubmit = function(event){
 const confirmAdd = function(){
   $('.newBookmarkFormArea').on('click', '#confirmAdd', function(event){
     event.preventDefault();
-    console.log('Heard you want to add this bookmark');
-    console.log(serializeJson());
+    const newSubmit = serializeJson();
+    addBookmark(newSubmit);
   });
 };
+
+//add a bookmark to the api from t 
+const addBookmark = function(newDataObject){
+  // take form input object that was created and send
+  //JSONified version via POST method.
+  api.createBookmark(newDataObject);
+};
+
 
 //handles the feature rating reads value
 
@@ -81,6 +91,7 @@ const confirmAdd = function(){
 const bindEventListeners = function () {
   addNewBookmark();
   confirmAdd();
+  deletePress();
 };
 
 //generate bookmark element
@@ -88,23 +99,51 @@ const generateBookmark = function(){
 
 };
 
+//update Store
+const storeUpdate = function(){
+  api.getBookmarks()
+    .then(bookmarks => {
+      store.storeObj.bookmarks = bookmarks;
+    });
+  console.log(store.storeObj);
+  render();
+};
+
 //generic render function
 const render = function(){
   store.storeObj.bookmarks.forEach(function(item){
-    $('.listArea').append(`
-      <div id="${item.id}">
+    $('.listArea').html(`
+      <div class="currentBookmark" id="${item.id}">
         <h3>${item.title}</h3>
         <a href="${item.url}" target="_blank">${item.url}</a>
         <div>${item.rating}</div>
         <p>${item.desc}</p>
+        <button id="delete">Delete</button>
       </div>
     `);  
   });
+};
+
+const getItemIdFromElement = function (item) {
+  return $(item)
+    .closest('.currentBookmark')
+    .attr('id');
+};
+
+const deletePress = function(){
+  $('.listArea').on('click','#delete', function(event){
+    let id = getItemIdFromElement(event.currentTarget);
+    console.log(id);
+    api.deleteBookmark(id);
+    storeUpdate();    
+  });
+  render();
 };
 
 
 export default {
   bindEventListeners,
   render,
-  renderNewBookmarkForm
+  addBookmark,
+  renderNewBookmarkForm,
 };

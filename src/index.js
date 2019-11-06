@@ -11,7 +11,7 @@ const main = function(){
       handleFeatures.render();
     });
   handleFeatures.bindEventListeners();
-  // handleFeatures.render();
+  handleFeatures.render();
 };
 
 $(main);
