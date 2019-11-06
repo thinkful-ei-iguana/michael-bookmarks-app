@@ -15,10 +15,10 @@ const renderNewBookmarkForm = function(){
   $('.newBookmarkFormArea').html(`
     <form class="newBookmarkForm">
       <label for="newBookmarkTitle">New Bookmark:</label>
-      <input name="newBookmarkTitle" id="newBookmarkTitle">
+      <input name="title" id="newBookmarkTitle">
       <label for="newBookmarkURL">URL:</label>
-      <input name="newBookmarkURL" id="newBookmarkURL">
-      <select id="newBookmarkRating" name="newBookmarkRating">
+      <input name="url" id="newBookmarkURL">
+      <select id="newBookmarkRating" name="rating">
         <option value="">Rating</option>
         <option value="5">5</option>
         <option value="4">4</option>
@@ -27,7 +27,7 @@ const renderNewBookmarkForm = function(){
         <option value="1">1</option>
       </select>
       <label for="urlDescription">Description:</label>
-      <input name="urlDescription" id="urlDescription">
+      <input name="desc" id="urlDescription">
       <div class="formButtons">
         <button type="submit">Cancel</button>
         <button id="confirmAdd" type="submit">Add</button>
@@ -36,6 +36,20 @@ const renderNewBookmarkForm = function(){
   `);
 };
 
+//serialize form data function
+$.fn.extend({
+  serializeJson: function(){
+    const formData = new FormData(this[0]);
+    const obj = {};
+    formData.forEach((val, name) => obj[name] = val);
+    return JSON.stringify(obj);
+  }
+});
+
+const handleNewBookmarkSubmit = function(e){
+  $(e.target).serializeJson();
+};
+  
 //handles confirm of bookmark by removing form html
 const confirmAdd = function(){
   $('#confirmAdd').on('click', function(event){
