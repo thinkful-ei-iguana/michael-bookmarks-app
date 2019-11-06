@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import api from './api';
+import store from './store';
 
 //inserts form html when form button is pressed.
 const addNewBookmark = function(){
@@ -46,15 +47,16 @@ $.fn.extend({
   }
 });
 
-const handleNewBookmarkSubmit = function(e){
-  $(e.target).serializeJson();
+const handleNewBookmarkSubmit = function(event){
+  $(event.target).serializeJson();
 };
   
 //handles confirm of bookmark by removing form html
 const confirmAdd = function(){
-  $('#confirmAdd').on('click', function(event){
+  $('.newBookmarkFormArea').on('submit', '#confirmAdd', function(event){
     event.preventDefault();
     console.log('Heard you want to add this bookmark');
+    handleNewBookmarkSubmit(event);
   });
 };
 
@@ -73,7 +75,16 @@ const generateBookmark = function(){
 
 //generic render function
 const render = function(){
-  
+  store.storeObj.bookmarks.forEach(function(item){
+    $('.listArea').append(`
+      <div id="${item.id}">
+        <h3>${item.title}</h3>
+        <a href="${item.url}" target="_blank">${item.url}</a>
+        <div>${item.rating}</div>
+        <p>${item.desc}</p>
+      </div>
+    `);  
+  });
 };
 
 
