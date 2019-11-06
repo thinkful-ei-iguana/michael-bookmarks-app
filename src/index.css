@@ -25,7 +25,7 @@
         margin-right: auto;
         justify-content: center;
     }
-    .newBookmarkForm{
+    #newBookmarkForm{
         margin: auto;
         justify-content: flex-start;
         width: 80%;

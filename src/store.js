@@ -7,12 +7,12 @@ const storeObj = {
   filter: 0
 };
 
-const addBookmark = function(){
-  console.log(bookmark);
-  console.log(store);
+const addBookmark = function(bookmark){
+  bookmark.expanded = false;
+  this.storeObj.bookmarks.push(bookmark);
 };
 
 export default {
-  addBookmark,
-  storeObj
+  storeObj,
+  addBookmark
 };

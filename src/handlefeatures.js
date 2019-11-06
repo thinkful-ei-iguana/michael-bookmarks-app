@@ -4,6 +4,15 @@ import store from './store';
 import cuid from 'cuid';
 
 
+//read filter setting
+const filterSetting = function(){
+  $('.filterRating').on('submit', function(event){
+    event.preventDefault;
+    let newRating = $('#filter').val();
+    console.log(newRating);
+  });
+};
+
 //inserts form html when form button is pressed.
 const addNewBookmark = function(){
   $('#newBookmark').on('click', function(event){
@@ -17,7 +26,7 @@ const addNewBookmark = function(){
 //new bookmark form html
 const renderNewBookmarkForm = function(){
   $('.newBookmarkFormArea').html(`
-    <form name="newBookmarkForm"class="newBookmarkForm">
+    <form name="newBookmarkForm" id="newBookmarkForm">
       <label for="newBookmarkTitle">New Bookmark:</label>
       <input name="title" id="newBookmarkTitle">
       <label for="newBookmarkURL">URL:</label>
@@ -52,6 +61,7 @@ const renderNewBookmarkForm = function(){
 
 const serializeJson = function() {
   // const formData = new FormData(form);
+  // console.log(formData);
   // const o = {};
   // formData.forEach((val, name) => o[name] = val);
   // return JSON.stringify(o);
@@ -64,16 +74,23 @@ const serializeJson = function() {
   };
 };
 
-const handleNewBookmarkSubmit = function(event){
-  $(event.target).serializeJson();
-};
+// $('#newBookmarkForm').submit(event =>{
+//   event.preventDefault();
+//   console.log('h');
+//   let formElement = $('newBookmarkForm')[0];
+//   console.log(serializeJson(formElement));
+// });
+
+// const handleNewBookmarkSubmit = function(event){
+//   $(event.target).serializeJson();
+// };
   
 //handles confirm of bookmark by removing form html
 const confirmAdd = function(){
   $('.newBookmarkFormArea').on('click', '#confirmAdd', function(event){
     event.preventDefault();
     const newSubmit = serializeJson();
-    addBookmark(newSubmit);
+    api.createBookmark(newSubmit);
   });
 };
 
@@ -92,6 +109,7 @@ const bindEventListeners = function () {
   addNewBookmark();
   confirmAdd();
   deletePress();
+  filterSetting();
 };
 
 //generate bookmark element
@@ -99,23 +117,13 @@ const generateBookmark = function(){
 
 };
 
-//update Store
-const storeUpdate = function(){
-  api.getBookmarks()
-    .then(bookmarks => {
-      store.storeObj.bookmarks = bookmarks;
-    });
-  console.log(store.storeObj);
-  render();
-};
-
 //generic render function
 const render = function(){
   store.storeObj.bookmarks.forEach(function(item){
-    $('.listArea').html(`
+    $('.listArea').append(`
       <div class="currentBookmark" id="${item.id}">
         <h3>${item.title}</h3>
-        <a href="${item.url}" target="_blank">${item.url}</a>
+        <a href="${item.url}" target="_blank">Visit Site</a>
         <div>${item.rating}</div>
         <p>${item.desc}</p>
         <button id="delete">Delete</button>
@@ -135,9 +143,8 @@ const deletePress = function(){
     let id = getItemIdFromElement(event.currentTarget);
     console.log(id);
     api.deleteBookmark(id);
-    storeUpdate();    
+    // storeUpdate();    
   });
-  render();
 };
 
 
