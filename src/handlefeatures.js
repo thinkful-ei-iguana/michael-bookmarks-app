@@ -110,6 +110,7 @@ const bindEventListeners = function () {
   confirmAdd();
   deletePress();
   filterSetting();
+  changeExpandedState();
 };
 
 //generate bookmark element
@@ -120,15 +121,35 @@ const generateBookmark = function(){
 //generic render function
 const render = function(){
   store.storeObj.bookmarks.forEach(function(item){
-    $('.listArea').append(`
-      <div class="currentBookmark" id="${item.id}">
-        <h3>${item.title}</h3>
-        <a href="${item.url}" target="_blank">Visit Site</a>
-        <div>${item.rating}</div>
-        <p>${item.desc}</p>
-        <button id="delete">Delete</button>
-      </div>
-    `);  
+    if(!item.expanded){
+      return $('.listArea').append(`
+        <div class="currentBookmark" >
+          <div class="condensedBookmark" id="${item.id}">
+            <div>${item.title}</div>
+            <div>${item.rating}</div>
+          </div>
+        </div>
+      `);
+    }
+    else{
+      return $('.listArea').append(`
+        <div class="expandedBookmark" id="${item.id}">
+          <h3>${item.title}</h3>
+          <a href="${item.url}" target="_blank">Visit Site</a>
+          <div>${item.rating}</div>
+          <p>${item.desc}</p>
+          <button id="delete">Delete</button>
+        </div>
+      `);
+    }  
+  });
+};
+
+const changeExpandedState = function(){
+  $('.listArea').on('click', function(event){
+    event.preventDefault();
+    console.log('clicking on a div!');
+    this.store.storeObj.bookmarks.expanded = !this.store.storeObj.bookmarks.expanded;
   });
 };
 

@@ -53,3 +53,11 @@
     border: 3px solid darkgrey;
     background-color: grey;
 }
+
+.condensedBookmark{
+    margin: 6px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    border: 3px solid grey;
+}
