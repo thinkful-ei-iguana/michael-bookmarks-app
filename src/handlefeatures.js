@@ -8,7 +8,7 @@ import cuid from 'cuid';
 //new bookmark form html
 const renderNewBookmarkForm = function(){
   return `
-    <form name="newBookmarkForm" id="newBookmarkForm">
+    <form class="newBookmarkForm" id="newBookmarkForm">
       <label for="newBookmarkTitle">New Bookmark:</label>
       <input name="title" id="newBookmarkTitle">
       <label for="newBookmarkURL">URL:</label>
@@ -24,7 +24,6 @@ const renderNewBookmarkForm = function(){
       <label for="urlDescription">Description:</label>
       <input name="desc" id="urlDescription">
       <div class="formButtons">
-        <button type="submit">Cancel</button>
         <button id="confirmAdd" type="submit">Add</button>
       </div>
     </form>
@@ -38,17 +37,16 @@ const renderAddButton = function(){
 };
 
 const renderAddForm = function(){
-  console.log(store.storeObj.adding);
-  if (store.storeObj.adding === false){
+  if (!store.adding){
     $('.headerNav').html(renderAddButton());
-  } else if(store.storeObj.adding === true){
+  } else{
     $('.newBookmarkFormArea').html(renderNewBookmarkForm());
   }
 };
 
-//generic render function
-const renderBookmark = function(bookmark){
-  if(!store.storeObj.expanded){
+//render bookmarks
+const renderBookmarkElement = function(bookmark){
+  if(!bookmark.expanded){
     return `
         <div class="currentBookmark">
           <div class="condensed" id="${bookmark.id}">
@@ -73,30 +71,32 @@ const renderBookmark = function(bookmark){
   }  
 };
 
+//////// RENDERING ///////
 
-
-const renderBookmarks = function(){
-  const bookmarks = [...store.storeObj.bookmarks];
-  console.log(bookmarks);
-  const stringedBookmarks = bookmarkString(bookmarks);
-  $('.listArea').html(stringedBookmarks);
-};
-
-const bookmarkString = function(array){
-  const newBookmarks = array.map(bookmark => {
+const bookmarkString = function(bookmarks){
+  const newBookmarks = bookmarks.map(bookmark => {
     if(bookmark.rating >= store.filter){
-      return renderBookmark(bookmark);
+      return renderBookmarkElement(bookmark);
     }
-    console.log(newBookmarks);
   });
   return newBookmarks.join('');
 };
 
+// const renderBookmarks = function(){
+//   const bookmarks = [...store.bookmarks];
+//   console.log(bookmarks);
+//   const stringedBookmarks = bookmarkString(bookmarks);
+//   $('.listArea').html(stringedBookmarks);
+// };
+
+
+
 
 const render = function(){
   renderAddForm();
-  renderAddButton();
-  renderBookmarks();
+  const bookmarks = [...store.bookmarks];
+  const newString = bookmarkString(bookmarks);
+  $('.listArea').html(newString);  
 };
 
 
@@ -166,8 +166,7 @@ const bindEventListeners = function () {
 //inserts form html when form button is pressed.
 const addNewBookmark = function(){
   $('.headerNav').on('click', function(event){
-    if(!store.storeObj.adding){
-      event.preventDefault();
+    if(!store.adding){
       console.log('I heard the new bookmark button get pressed');
       store.toggleAdding();
       render();
@@ -176,11 +175,12 @@ const addNewBookmark = function(){
 };
 
 const confirmAdd = function(){
-  $('.newBookmarkFormArea').submit('#newBookmarkForm', function(event){
+  $('.newBookmarkFormArea').on('click','#confirmAdd', function(event){
     event.preventDefault();
-    const formData = serializeJson();
+    console.log('I hear you');
+    //const formData = serializeJson();
     store.toggleAdding();
-  
+    render();
   });
   // $('.newBookmarkFormArea').on('click', '#confirmAdd', function(event){
   //   event.preventDefault();
@@ -197,7 +197,7 @@ const changeExpandedState = function(){
   $('.listArea').on('click', function(event){
     event.preventDefault();
     console.log('clicking on a div!');
-    this.store.storeObj.bookmarks.expanded = !this.store.storeObj.bookmarks.expanded;
+    this.store.bookmarks.expanded = !this.store.bookmarks.expanded;
   });
 };
 

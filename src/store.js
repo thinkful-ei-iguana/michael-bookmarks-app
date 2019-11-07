@@ -1,26 +1,23 @@
-
-
-const storeObj = {
-  bookmarks: [],
-  adding: false,
-  error: null,
-  filter: 0
-};
+const bookmarks = [];
+let  adding = false;
+let  error = null;
+let  filter = 0;
 
 
 
 const addBookmark = function(bookmark){
   bookmark.expanded = false;
-  this.storeObj.bookmarks.push(bookmark);
+  this.bookmarks.push(bookmark);
 };
 
 //toggle expanded on target bookmark
-const toggleExpanded = function(){
-  this.bookmarks.expanded = !this.bookmarks.expanded;
+const toggleExpanded = function(id){
+  let currentBookmark = findById(id);
+  currentBookmark.expanded = !currentBookmark.expanded;
 };
 
 const toggleAdding = function(){
-  storeObj.adding = !storeObj.adding;
+  this.adding = !this.adding;
 };
 
 //change filter
@@ -28,10 +25,23 @@ const filterSelect = function(number){
   this.filter = number;
 };
 
+const findById = function(id){
+  return this.bookmarks.find(bookmark => bookmark.id === id);
+};
+
+const setError = function(error){
+  this.error = error;
+};
+
 export default {
-  storeObj,
+  bookmarks,
+  adding,
+  error,
+  filter,
   addBookmark,
   toggleExpanded,
   toggleAdding,
-
+  filterSelect,
+  findById,
+  setError
 };
