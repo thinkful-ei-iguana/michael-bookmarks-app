@@ -43,21 +43,34 @@
 
 * {
     box-sizing: border-box;
-    background-color: lightgrey;
+    background-color: #eeeeee;
+    border-radius: 3px;
 }
-
+main{
+    color: #1c2833;
+}
 .newBookmarkForm{
     width: 80%;
     display: flex;
     flex-direction: column;
-    border: 3px solid darkgrey;
+    border: 3px solid #1c2833;
     background-color: grey;
 }
+header h1{
+    background: black;
+    color: white;
+}
 
-.condensedBookmark{
-    margin: 6px;
+.condensed{
+    margin: 3px;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    border: 3px solid grey;
+    border: 3px solid black;
+}
+
+.expanded{
+    margin: 3px;
+    display: flex;
+    border: 3px solid black;
 }
