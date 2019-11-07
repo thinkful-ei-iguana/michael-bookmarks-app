@@ -1,50 +1,49 @@
 import cuid from 'cuid';
 import $ from 'jquery';
-import handleFeatures from './handleFeatures';
 
 
 const baseURL = 'https://thinkful-list-api.herokuapp.com/michael/bookmarks';
 
 //default fetch expression ***WORKS
-// function apiFetch(...args){
-//   let error;
-//   return fetch(...args)
-//     .then(res =>{
-//       if (!res.ok){
-//         error = { code: res.status };
-//       }
-//       return res.json();
-//     })
-//     .then(data => {
-//       if (error) {
-//         error.message = data.message;
-//         return Promise.rejects(error);
-//       }
-//       return data;
-//     });
-// }
-
-const apiFetch = function (...args) {
+const apiFetch = function(...args){
   let error;
   return fetch(...args)
-    .then(res => {
-      if (!res.ok) {
+    .then(res =>{
+      if (!res.ok){
         error = { code: res.status };
-        if (!res.headers.get('content-type').includes('json')) {
-          error.message = res.statusText;
-          return Promise.reject(error);
-        }
       }
       return res.json();
     })
     .then(data => {
       if (error) {
         error.message = data.message;
-        return Promise.reject(error);
+        return Promise.rejects(error);
       }
       return data;
     });
 };
+
+// const apiFetch = function (...args) {
+//   let error;
+//   return fetch(...args)
+//     .then(res => {
+//       if (!res.ok) {
+//         error = { code: res.status };
+//         if (!res.headers.get('content-type').includes('json')) {
+//           error.message = res.statusText;
+//           return Promise.reject(error);
+//         }
+//       }
+//       return res.json();
+//     })
+//     .then(data => {
+//       if (error) {
+//         error.message = data.message;
+//         return Promise.reject(error);
+//       }
+//       return data;
+//     });
+// };
 
 const getBookmarks = function(){
   return apiFetch(`${baseURL}`);

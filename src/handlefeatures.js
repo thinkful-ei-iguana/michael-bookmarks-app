@@ -90,9 +90,8 @@ const renderError = function(){
 
 
 const render = function(){
-  renderError();
+  //renderError();
   renderAddForm();
-  console.log(store.bookmarks);
   const bookmarks = [...store.bookmarks];
   const newString = bookmarkString(bookmarks);
   $('.listArea').html(newString);  
@@ -107,11 +106,11 @@ const render = function(){
 
 const serializeJson = function() {
   return {
-    "title": $('#newBookmarkTitle').val(),
-    "desc": $('#urlDescription').val(),
-    "url": $('#newBookmarkURL').val(),
-    "id": cuid(),
-    "rating": $('#newBookmarkRating').val(),
+    'title': $('#newBookmarkTitle').val(),
+    'desc': $('#urlDescription').val(),
+    'url': $('#newBookmarkURL').val(),
+    'id': cuid(),
+    'rating': $('#newBookmarkRating').val(),
   };
 };
 
@@ -146,7 +145,7 @@ const filterSetting = function(){
 
 //inserts form html when form button is pressed.
 const addNewBookmark = function(){
-  $('.buttonField').on('click', function(event){
+  $('.buttonField').on('click', function(){
     if(!store.adding){
       store.toggleAdding();
       render();
@@ -156,22 +155,18 @@ const addNewBookmark = function(){
 
 //on button press, adds the new bookmark
 const confirmAdd = function(){
-  if(store.adding === true){
-    $('.newBookmarkFormArea').on('click','#confirmAdd', function(event){
-      event.preventDefault();
-      console.log('I hear you');
-      store.toggleAdding();
-      const formData = serializeJson();
-      api.createBookmark(formData)
-        .then((newBookmark) => {
-          store.addBookmark(newBookmark);
-          render();
-        });
-    });
-  }
+  $('.newBookmarkFormArea').on('click','#confirmAdd', function(event){
+    event.preventDefault();
+    store.toggleAdding();
+    const formData = serializeJson();
+    api.createBookmark(formData)
+      .then((newBookmark) => {
+        store.addBookmark(newBookmark);
+        render();
+      });
+    $('.newBookmarkFormArea').remove();
+  });
 };
-
-
 
 const changeExpandedState = function(){
   $('.listArea').on('click','.condensed', function(event){
@@ -181,9 +176,14 @@ const changeExpandedState = function(){
     store.toggleExpanded(id);
     render();
   });
+  $('.listArea').on('click', '.expanded', function(event){
+    event.preventDefault();
+    console.log('clicking on an expanded div');
+    const id = getBookmarkId(event.currentTarget);
+    store.toggleExpanded(id);
+    render();
+  });
 };
-
-
 
 const deletePress = function(){
   $('.listArea').on('click','#delete', function(event){
