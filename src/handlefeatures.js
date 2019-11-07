@@ -15,11 +15,11 @@ const renderNewBookmarkForm = function(){
       <input name="url" id="newBookmarkURL" required>
       <select id="newBookmarkRating" name="rating" required>
         <option value="">Rating</option>
-        <option value="5">5</option>
-        <option value="4">4</option>
-        <option value="3">3</option>
-        <option value="2">2</option>
-        <option value="1">1</option>
+        <option value="5">★★★★★</option>
+        <option value="4">★★★★☆</option>
+        <option value="3">★★★☆☆</option>
+        <option value="2">★★☆☆☆</option>
+        <option value="1">★☆☆☆☆</option>
       </select>
       <label for="urlDescription">Description:</label>
       <input name="desc" id="urlDescription">
@@ -52,7 +52,7 @@ const renderBookmarkElement = function(bookmark){
         <section class="currentBookmark" id="${bookmark.id}">
           <div class="condensed" id="${bookmark.id}">
             <div>${bookmark.title}</div>
-            <div>${bookmark.rating}</div>
+            <div>${convertToStars(bookmark.rating)}</div>
           </div>
         </section>
       `;
@@ -63,7 +63,7 @@ const renderBookmarkElement = function(bookmark){
           <div class="expanded" id="${bookmark.id}">
             <h3>${bookmark.title}</h3>
             <a href="${bookmark.url}" target="_blank">Visit Site</a>
-            <div>${bookmark.rating}</div>
+            <div>${convertToStars(bookmark.rating)}</div>
             <p>${bookmark.desc}</p>
             <div><button id="delete">Delete</button></div>
           </div>
@@ -90,6 +90,22 @@ const bookmarkString = function(bookmarks){
     }
   });
   return newBookmarks.join('');
+};
+
+//converts numeric rating into star rating
+const convertToStars = function(num){
+  switch (num){
+    case 5:
+      return '★★★★★';
+    case 4:
+      return '★★★★☆';
+    case 3:
+      return '★★★☆☆';
+    case 2:
+      return '★★☆☆☆';
+    case 1:
+      return '★☆☆☆☆';
+    };
 };
 
 // error rendering
