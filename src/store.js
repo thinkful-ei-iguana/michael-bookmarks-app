@@ -17,7 +17,6 @@ const deleteBookmark = function(id){
 //toggle expanded on target bookmark
 const toggleExpanded = function(id){
   let currentBookmark = findById(id);
-  console.log(currentBookmark);
   currentBookmark.expanded = !currentBookmark.expanded;
 };
 
@@ -31,7 +30,6 @@ const filterSelect = function(number){
 };
 
 const findById = function(id){
-  console.log(id);
   return bookmarks.find(bookmark => bookmark.id === id);
 };
 

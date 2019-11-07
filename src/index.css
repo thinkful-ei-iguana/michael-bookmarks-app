@@ -4,8 +4,9 @@
         text-align: center;
 
     }
-    header .headerNav{
-        justify-content: center;
+     .headerNav{
+        display: flex;
+        justify-content: space-between;
         text-align: center;
     }
 }
