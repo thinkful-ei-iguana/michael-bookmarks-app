@@ -32,7 +32,6 @@
         display: flex;
         flex-direction: column;
         border: 3px solid darkgrey;
-        background-color: grey;
     }
     .formButtons{
         text-align: center;
@@ -54,13 +53,15 @@ main{
     display: flex;
     flex-direction: column;
     border: 3px solid #1c2833;
-    background-color: grey;
+    padding: 6px;
 }
 header h1{
-    background: black;
-    color: white;
+    background: #1c2833;
+    color: #eeeeee;
 }
-
+.errorContent{
+    border: 3px solid #1c2833;
+}
 .condensed{
     margin: 3px;
     display: flex;

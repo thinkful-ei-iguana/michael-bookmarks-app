@@ -10,10 +10,10 @@ const renderNewBookmarkForm = function(){
   return `
     <form class="newBookmarkForm" id="newBookmarkForm">
       <label for="newBookmarkTitle">New Bookmark:</label>
-      <input name="title" id="newBookmarkTitle">
+      <input name="title" id="newBookmarkTitle" required>
       <label for="newBookmarkURL">URL:</label>
-      <input name="url" id="newBookmarkURL">
-      <select id="newBookmarkRating" name="rating">
+      <input name="url" id="newBookmarkURL" required>
+      <select id="newBookmarkRating" name="rating" required>
         <option value="">Rating</option>
         <option value="5">5</option>
         <option value="4">4</option>
@@ -39,8 +39,8 @@ const renderAddButton = function(){
 const renderAddForm = function(){
   if (store.adding === false){
     $('.buttonField').html(renderAddButton());
-  } else{
-    $('.buttonField').remove();
+  } else {
+    $('.buttonField').empty();
     $('.newBookmarkFormArea').html(renderNewBookmarkForm());
   }
 };
@@ -72,6 +72,15 @@ const renderBookmarkElement = function(bookmark){
   }  
 };
 
+const errorHtml = function(message){
+  return `
+    <section class="errorContent">
+      <p>${message}</p>
+      <button id="cancelError">Cancel</button>
+    </section>
+  `;
+};
+
 //////// RENDERING ///////
 
 const bookmarkString = function(bookmarks){
@@ -85,12 +94,17 @@ const bookmarkString = function(bookmarks){
 
 // error rendering
 const renderError = function(){
-
+  if (store.error){
+    const el = errorHtml(store.error);
+    $('.errorContainer').html(el);
+  }else{
+    $('.errorContainer').empty();
+  }
 };
 
 
 const render = function(){
-  //renderError();
+  renderError();
   renderAddForm();
   const bookmarks = [...store.bookmarks];
   const newString = bookmarkString(bookmarks);
@@ -102,6 +116,7 @@ const render = function(){
 
 
 ///////// FORM INPUT HANDLING //////////
+
 
 
 const serializeJson = function() {
@@ -124,6 +139,15 @@ const bindEventListeners = function () {
   filterSetting();
   changeExpandedState();
   getBookmarkId();
+  handleCloseError();
+};
+
+const handleCloseError = function(){
+  $('.errorContainer').on('click', '#cancelError', ()=>{
+    store.setError(null);
+    store.adding = false;
+    render();
+  });
 };
 
 const getBookmarkId = function (bookmark) {
@@ -157,28 +181,30 @@ const addNewBookmark = function(){
 const confirmAdd = function(){
   $('.newBookmarkFormArea').on('click','#confirmAdd', function(event){
     event.preventDefault();
-    store.toggleAdding();
     const formData = serializeJson();
     api.createBookmark(formData)
       .then((newBookmark) => {
         store.addBookmark(newBookmark);
+        store.toggleAdding();
         render();
+      })
+      .catch((err) =>{
+        store.setError(err.message);
+        renderError();
       });
-    $('.newBookmarkFormArea').remove();
+    $('.newBookmarkFormArea').empty();
   });
 };
 
 const changeExpandedState = function(){
   $('.listArea').on('click','.condensed', function(event){
     event.preventDefault();
-    console.log('clicking on a div!');
     const id = getBookmarkId(event.currentTarget);
     store.toggleExpanded(id);
     render();
   });
   $('.listArea').on('click', '.expanded', function(event){
     event.preventDefault();
-    console.log('clicking on an expanded div');
     const id = getBookmarkId(event.currentTarget);
     store.toggleExpanded(id);
     render();
