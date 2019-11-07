@@ -3,29 +3,11 @@ import api from './api';
 import store from './store';
 import cuid from 'cuid';
 
-
-//read filter setting
-const filterSetting = function(){
-  $('.filterRating').on('submit', function(event){
-    event.preventDefault;
-    let newRating = $('#filter').val();
-    console.log(newRating);
-  });
-};
-
-//inserts form html when form button is pressed.
-const addNewBookmark = function(){
-  $('#newBookmark').on('click', function(event){
-    event.preventDefault();
-    console.log('I heard the new bookmark button get pressed');
-    renderNewBookmarkForm();
-    //need to add button disable functionality
-  });
-};
+//////// HTML ELEMENTS ///////
 
 //new bookmark form html
 const renderNewBookmarkForm = function(){
-  $('.newBookmarkFormArea').html(`
+  return `
     <form name="newBookmarkForm" id="newBookmarkForm">
       <label for="newBookmarkTitle">New Bookmark:</label>
       <input name="title" id="newBookmarkTitle">
@@ -46,18 +28,90 @@ const renderNewBookmarkForm = function(){
         <button id="confirmAdd" type="submit">Add</button>
       </div>
     </form>
-  `);
+  `;
 };
 
-//serialize form data function
-// $.fn.extend({
-//   serializeJson: function(){
-//     const formData = new FormData(this[0]);
-//     const obj = {};
-//     formData.forEach((val, name) => obj[name] = val);
-//     return JSON.stringify(obj);
-//   }
-// });
+const renderAddButton = function(){
+  return `
+    <button type="button" id="newBookmark">Add New Bookmark</button>
+  `;
+};
+
+const renderAddForm = function(){
+  console.log(store.storeObj.adding);
+  if (store.storeObj.adding === false){
+    $('.headerNav').html(renderAddButton());
+  } else if(store.storeObj.adding === true){
+    $('.newBookmarkFormArea').html(renderNewBookmarkForm());
+  }
+};
+
+//generic render function
+const renderBookmark = function(bookmark){
+  if(!store.storeObj.expanded){
+    return `
+        <div class="currentBookmark">
+          <div class="condensed" id="${bookmark.id}">
+            <div>${bookmark.title}</div>
+            <div>${bookmark.rating}</div>
+          </div>
+        </div>
+      `;
+  }
+  else {
+    return `
+        <div class="currentBookmark">
+          <div class="expanded" id="${bookmark.id}">
+            <h3>${bookmark.title}</h3>
+            <a href="${bookmark.url}" target="_blank">Visit Site</a>
+            <div>${bookmark.rating}</div>
+            <p>${bookmark.desc}</p>
+            <button id="delete">Delete</button>
+          </div>
+        </div>
+      `;
+  }  
+};
+
+
+
+const renderBookmarks = function(){
+  const bookmarks = [...store.storeObj.bookmarks];
+  console.log(bookmarks);
+  const stringedBookmarks = bookmarkString(bookmarks);
+  $('.listArea').html(stringedBookmarks);
+};
+
+const bookmarkString = function(array){
+  const newBookmarks = array.map(bookmark => {
+    if(bookmark.rating >= store.filter){
+      return renderBookmark(bookmark);
+    }
+    console.log(newBookmarks);
+  });
+  return newBookmarks.join('');
+};
+
+
+const render = function(){
+  renderAddForm();
+  renderAddButton();
+  renderBookmarks();
+};
+
+
+
+//read filter setting
+const filterSetting = function(){
+  $('.filterRating').on('submit', function(event){
+    event.preventDefault;
+    let newRating = $('#filter').val();
+    console.log(newRating);
+  });
+};
+
+///////// FORM INPUT HANDLING //////////
+
 
 const serializeJson = function() {
   // const formData = new FormData(form);
@@ -85,14 +139,6 @@ const serializeJson = function() {
 //   $(event.target).serializeJson();
 // };
   
-//handles confirm of bookmark by removing form html
-const confirmAdd = function(){
-  $('.newBookmarkFormArea').on('click', '#confirmAdd', function(event){
-    event.preventDefault();
-    const newSubmit = serializeJson();
-    api.createBookmark(newSubmit);
-  });
-};
 
 //add a bookmark to the api from t 
 const addBookmark = function(newDataObject){
@@ -100,6 +146,9 @@ const addBookmark = function(newDataObject){
   //JSONified version via POST method.
   api.createBookmark(newDataObject);
 };
+
+//handles confirm of bookmark by removing form html
+
 
 
 //handles the feature rating reads value
@@ -113,36 +162,35 @@ const bindEventListeners = function () {
   changeExpandedState();
 };
 
-//generate bookmark element
-const generateBookmark = function(){
 
+//inserts form html when form button is pressed.
+const addNewBookmark = function(){
+  $('.headerNav').on('click', function(event){
+    if(!store.storeObj.adding){
+      event.preventDefault();
+      console.log('I heard the new bookmark button get pressed');
+      store.toggleAdding();
+      render();
+    }
+  });
 };
 
-//generic render function
-const render = function(){
-  store.storeObj.bookmarks.forEach(function(item){
-    if(!item.expanded){
-      return $('.listArea').append(`
-        <div class="currentBookmark" >
-          <div class="condensedBookmark" id="${item.id}">
-            <div>${item.title}</div>
-            <div>${item.rating}</div>
-          </div>
-        </div>
-      `);
-    }
-    else{
-      return $('.listArea').append(`
-        <div class="expandedBookmark" id="${item.id}">
-          <h3>${item.title}</h3>
-          <a href="${item.url}" target="_blank">Visit Site</a>
-          <div>${item.rating}</div>
-          <p>${item.desc}</p>
-          <button id="delete">Delete</button>
-        </div>
-      `);
-    }  
+const confirmAdd = function(){
+  $('.newBookmarkFormArea').submit('#newBookmarkForm', function(event){
+    event.preventDefault();
+    const formData = serializeJson();
+    store.toggleAdding();
+  
   });
+  // $('.newBookmarkFormArea').on('click', '#confirmAdd', function(event){
+  //   event.preventDefault();
+  //   console.log('I hear you');
+  //   const newSubmit = serializeJson();
+  //   console.log(newSubmit);
+  //   api.createBookmark(newSubmit);
+  //   store.toggleAdding();
+  //   render();
+  // });
 };
 
 const changeExpandedState = function(){
@@ -172,6 +220,7 @@ const deletePress = function(){
 export default {
   bindEventListeners,
   render,
+  renderBookmark,
   addBookmark,
-  renderNewBookmarkForm,
+  renderNewBookmarkForm
 };
