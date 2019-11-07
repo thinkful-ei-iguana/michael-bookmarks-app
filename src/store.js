@@ -1,18 +1,23 @@
 const bookmarks = [];
-let  adding = false;
-let  error = null;
-let  filter = 0;
+let adding = false;
+let error = null;
+let filter = 0;
 
 
 
 const addBookmark = function(bookmark){
   bookmark.expanded = false;
-  this.bookmarks.push(bookmark);
+  return bookmarks.push(bookmark);
+};
+
+const deleteBookmark = function(id){
+  this.bookmarks = this.bookmarks.filter(bookmark => bookmark.id !== id);
 };
 
 //toggle expanded on target bookmark
 const toggleExpanded = function(id){
   let currentBookmark = findById(id);
+  console.log(currentBookmark);
   currentBookmark.expanded = !currentBookmark.expanded;
 };
 
@@ -26,7 +31,8 @@ const filterSelect = function(number){
 };
 
 const findById = function(id){
-  return this.bookmarks.find(bookmark => bookmark.id === id);
+  console.log(id);
+  return bookmarks.find(bookmark => bookmark.id === id);
 };
 
 const setError = function(error){
@@ -39,6 +45,7 @@ export default {
   error,
   filter,
   addBookmark,
+  deleteBookmark,
   toggleExpanded,
   toggleAdding,
   filterSelect,

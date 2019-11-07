@@ -37,7 +37,7 @@ const renderAddButton = function(){
 };
 
 const renderAddForm = function(){
-  if (!store.adding){
+  if (store.adding === false){
     $('.headerNav').html(renderAddButton());
   } else{
     $('.newBookmarkFormArea').html(renderNewBookmarkForm());
@@ -48,25 +48,25 @@ const renderAddForm = function(){
 const renderBookmarkElement = function(bookmark){
   if(!bookmark.expanded){
     return `
-        <div class="currentBookmark">
+        <section class="currentBookmark" id="${bookmark.id}">
           <div class="condensed" id="${bookmark.id}">
             <div>${bookmark.title}</div>
             <div>${bookmark.rating}</div>
           </div>
-        </div>
+        </section>
       `;
   }
   else {
     return `
-        <div class="currentBookmark">
+        <section class="currentBookmark" id="${bookmark.id}">
           <div class="expanded" id="${bookmark.id}">
             <h3>${bookmark.title}</h3>
             <a href="${bookmark.url}" target="_blank">Visit Site</a>
             <div>${bookmark.rating}</div>
             <p>${bookmark.desc}</p>
-            <button id="delete">Delete</button>
+            <div><button id="delete">Delete</button></div>
           </div>
-        </div>
+        </section>
       `;
   }  
 };
@@ -82,18 +82,11 @@ const bookmarkString = function(bookmarks){
   return newBookmarks.join('');
 };
 
-// const renderBookmarks = function(){
-//   const bookmarks = [...store.bookmarks];
-//   console.log(bookmarks);
-//   const stringedBookmarks = bookmarkString(bookmarks);
-//   $('.listArea').html(stringedBookmarks);
-// };
-
-
 
 
 const render = function(){
   renderAddForm();
+  console.log(store.bookmarks);
   const bookmarks = [...store.bookmarks];
   const newString = bookmarkString(bookmarks);
   $('.listArea').html(newString);  
@@ -138,17 +131,6 @@ const serializeJson = function() {
 // const handleNewBookmarkSubmit = function(event){
 //   $(event.target).serializeJson();
 // };
-  
-
-//add a bookmark to the api from t 
-const addBookmark = function(newDataObject){
-  // take form input object that was created and send
-  //JSONified version via POST method.
-  api.createBookmark(newDataObject);
-};
-
-//handles confirm of bookmark by removing form html
-
 
 
 //handles the feature rating reads value
@@ -160,6 +142,7 @@ const bindEventListeners = function () {
   deletePress();
   filterSetting();
   changeExpandedState();
+  getBookmarkId();
 };
 
 
@@ -167,7 +150,6 @@ const bindEventListeners = function () {
 const addNewBookmark = function(){
   $('.headerNav').on('click', function(event){
     if(!store.adding){
-      console.log('I heard the new bookmark button get pressed');
       store.toggleAdding();
       render();
     }
@@ -175,44 +157,49 @@ const addNewBookmark = function(){
 };
 
 const confirmAdd = function(){
-  $('.newBookmarkFormArea').on('click','#confirmAdd', function(event){
-    event.preventDefault();
-    console.log('I hear you');
-    //const formData = serializeJson();
-    store.toggleAdding();
-    render();
-  });
-  // $('.newBookmarkFormArea').on('click', '#confirmAdd', function(event){
-  //   event.preventDefault();
-  //   console.log('I hear you');
-  //   const newSubmit = serializeJson();
-  //   console.log(newSubmit);
-  //   api.createBookmark(newSubmit);
-  //   store.toggleAdding();
-  //   render();
-  // });
+  if(store.adding === true){
+    $('.newBookmarkFormArea').on('click','#confirmAdd', function(event){
+      event.preventDefault();
+      console.log('I hear you');
+      store.toggleAdding();
+      const formData = serializeJson();
+      api.createBookmark(formData)
+        .then((newBookmark) => {
+          store.addBookmark(newBookmark);
+          render();
+        });
+    });
+  }
 };
 
-const changeExpandedState = function(){
-  $('.listArea').on('click', function(event){
-    event.preventDefault();
-    console.log('clicking on a div!');
-    this.store.bookmarks.expanded = !this.store.bookmarks.expanded;
-  });
-};
-
-const getItemIdFromElement = function (item) {
-  return $(item)
-    .closest('.currentBookmark')
+const getBookmarkId = function (bookmark) {
+  return $(bookmark)
+    .closest('section')
     .attr('id');
 };
 
+const changeExpandedState = function(){
+  $('.listArea').on('click','.condensed', function(event){
+    event.preventDefault();
+    console.log('clicking on a div!');
+    const id = getBookmarkId(event.currentTarget);
+    store.toggleExpanded(id);
+    render();
+  });
+};
+
+
+
 const deletePress = function(){
   $('.listArea').on('click','#delete', function(event){
-    let id = getItemIdFromElement(event.currentTarget);
+    console.log(event.currentTarget);
+    let id = getBookmarkId(event.currentTarget);
     console.log(id);
-    api.deleteBookmark(id);
-    // storeUpdate();    
+    api.deleteBookmark(id)
+      .then(() => {
+        store.deleteBookmark(id);
+        render();
+      });   
   });
 };
 
@@ -220,7 +207,4 @@ const deletePress = function(){
 export default {
   bindEventListeners,
   render,
-  renderBookmark,
-  addBookmark,
-  renderNewBookmarkForm
 };

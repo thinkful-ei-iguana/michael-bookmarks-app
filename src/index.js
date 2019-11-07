@@ -10,7 +10,6 @@ const main = function(){
       bookmarks.forEach((bookmark) => store.addBookmark(bookmark));
       handleFeatures.render();
     });
-  console.log(store.bookmarks);
   handleFeatures.bindEventListeners();
   handleFeatures.render();
 };
