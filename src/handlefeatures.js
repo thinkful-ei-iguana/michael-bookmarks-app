@@ -38,13 +38,14 @@ const renderAddButton = function(){
 
 const renderAddForm = function(){
   if (store.adding === false){
-    $('.headerNav').html(renderAddButton());
+    $('.buttonField').html(renderAddButton());
   } else{
+    $('.buttonField').remove();
     $('.newBookmarkFormArea').html(renderNewBookmarkForm());
   }
 };
 
-//render bookmarks
+//bookmarks html
 const renderBookmarkElement = function(bookmark){
   if(!bookmark.expanded){
     return `
@@ -82,9 +83,14 @@ const bookmarkString = function(bookmarks){
   return newBookmarks.join('');
 };
 
+// error rendering
+const renderError = function(){
+
+};
 
 
 const render = function(){
+  renderError();
   renderAddForm();
   console.log(store.bookmarks);
   const bookmarks = [...store.bookmarks];
@@ -94,24 +100,12 @@ const render = function(){
 
 
 
-//read filter setting
-const filterSetting = function(){
-  $('.filterRating').on('submit', function(event){
-    event.preventDefault;
-    let newRating = $('#filter').val();
-    console.log(newRating);
-  });
-};
+
 
 ///////// FORM INPUT HANDLING //////////
 
 
 const serializeJson = function() {
-  // const formData = new FormData(form);
-  // console.log(formData);
-  // const o = {};
-  // formData.forEach((val, name) => o[name] = val);
-  // return JSON.stringify(o);
   return {
     "title": $('#newBookmarkTitle').val(),
     "desc": $('#urlDescription').val(),
@@ -121,21 +115,9 @@ const serializeJson = function() {
   };
 };
 
-// $('#newBookmarkForm').submit(event =>{
-//   event.preventDefault();
-//   console.log('h');
-//   let formElement = $('newBookmarkForm')[0];
-//   console.log(serializeJson(formElement));
-// });
 
-// const handleNewBookmarkSubmit = function(event){
-//   $(event.target).serializeJson();
-// };
+//////// EVENT LISTENERS /////////
 
-
-//handles the feature rating reads value
-
-//event listeners
 const bindEventListeners = function () {
   addNewBookmark();
   confirmAdd();
@@ -145,10 +127,26 @@ const bindEventListeners = function () {
   getBookmarkId();
 };
 
+const getBookmarkId = function (bookmark) {
+  return $(bookmark)
+    .closest('section')
+    .attr('id');
+};
+
+//read filter setting
+const filterSetting = function(){
+  $('.filterField').change( function(event){
+    event.preventDefault();
+    let newRating = $('#filter').val();
+    store.filterSelect(newRating);
+    render();
+  });
+};
+
 
 //inserts form html when form button is pressed.
 const addNewBookmark = function(){
-  $('.headerNav').on('click', function(event){
+  $('.buttonField').on('click', function(event){
     if(!store.adding){
       store.toggleAdding();
       render();
@@ -156,6 +154,7 @@ const addNewBookmark = function(){
   });
 };
 
+//on button press, adds the new bookmark
 const confirmAdd = function(){
   if(store.adding === true){
     $('.newBookmarkFormArea').on('click','#confirmAdd', function(event){
@@ -172,11 +171,7 @@ const confirmAdd = function(){
   }
 };
 
-const getBookmarkId = function (bookmark) {
-  return $(bookmark)
-    .closest('section')
-    .attr('id');
-};
+
 
 const changeExpandedState = function(){
   $('.listArea').on('click','.condensed', function(event){
@@ -192,9 +187,7 @@ const changeExpandedState = function(){
 
 const deletePress = function(){
   $('.listArea').on('click','#delete', function(event){
-    console.log(event.currentTarget);
     let id = getBookmarkId(event.currentTarget);
-    console.log(id);
     api.deleteBookmark(id)
       .then(() => {
         store.deleteBookmark(id);
