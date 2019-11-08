@@ -95,17 +95,17 @@ const bookmarkString = function(bookmarks){
 //converts numeric rating into star rating
 const convertToStars = function(num){
   switch (num){
-    case 5:
-      return '★★★★★';
-    case 4:
-      return '★★★★☆';
-    case 3:
-      return '★★★☆☆';
-    case 2:
-      return '★★☆☆☆';
-    case 1:
-      return '★☆☆☆☆';
-    };
+  case 5:
+    return '★★★★★';
+  case 4:
+    return '★★★★☆';
+  case 3:
+    return '★★★☆☆';
+  case 2:
+    return '★★☆☆☆';
+  case 1:
+    return '★☆☆☆☆';
+  };
 };
 
 // error rendering
