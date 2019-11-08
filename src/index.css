@@ -80,6 +80,7 @@ header h1{
 }
 
 .condensed:hover{
+    transition: all 0.5s;
     background-color: rgba(0, 0, 0, 0.1);
 }
 .condensed:hover > *{
