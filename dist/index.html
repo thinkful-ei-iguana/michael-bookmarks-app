@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <link href="https://fonts.googleapis.com/css?family=Kanit&display=swap" rel="stylesheet">
+  <title>Michael's Bookmarks App</title>
+</head>
+<body>
+  <header>
+  <h1>Wicked Booksmart</h1>
+  <div class="headerNav">
+    
+    <div class="filterField">
+      <label for="filter"></label>
+      <select class="filter" id="filter" name="filterByRating" required>
+        <option value="">Filter by minimum rating</option>
+        <option value="5">★★★★★</option>
+        <option value="4">★★★★☆</option>
+        <option value="3">★★★☆☆</option>
+        <option value="2">★★☆☆☆</option>
+        <option value="1">★☆☆☆☆</option>
+      </select>
+    </div>
+    <div class="buttonField"></div>
+    <!-- opens form to create a new bookmark -->
+  </div>
+    <!-- changes rendering to only render bookmarks sorted
+    by rating -->
+  </header>
+  <main>
+    <section class="newBookmarkFormArea"></section>
+    <section class="errorContainer"></section>
+    <section class="listArea"></section>
+  </main>
+  <footer></footer>
+<script type="text/javascript" src="index_bundle.js"></script></body>
+</html>
