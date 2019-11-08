@@ -50,7 +50,7 @@ const renderBookmarkElement = function(bookmark){
   if(!bookmark.expanded){
     return `
         <section class="currentBookmark" id="${bookmark.id}">
-          <div class="condensed" id="${bookmark.id}">
+          <div class="condensed">
             <div>${bookmark.title}</div>
             <div>${convertToStars(bookmark.rating)}</div>
           </div>
@@ -60,7 +60,7 @@ const renderBookmarkElement = function(bookmark){
   else {
     return `
         <section class="currentBookmark" id="${bookmark.id}">
-          <div class="expanded" id="${bookmark.id}">
+          <div class="expanded">
             <h3>${bookmark.title}</h3>
             <a href="${bookmark.url}" target="_blank">Visit Site</a>
             <div>${convertToStars(bookmark.rating)}</div>

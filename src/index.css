@@ -42,6 +42,7 @@
 }
 
 * {
+    font-family: 'kanit', sans-serif;
     box-sizing: border-box;
     background-color: #eeeeee;
     border-radius: 3px;
@@ -53,26 +54,54 @@ main{
     width: 80%;
     display: flex;
     flex-direction: column;
+    background-color: #e7e6e1;
     border: 3px solid #1c2833;
     padding: 6px;
+}
+.newBookmarkForm > *{
+    background-color: #e7e6e1;
+}
+.newBookmarkForm input{
+    background-color: #f7f6e7; 
 }
 header h1{
     background: #1c2833;
     color: #eeeeee;
 }
 .errorContent{
-    border: 3px solid #1c2833;
+    border: 3px groove #1c2833;
 }
 .condensed{
     margin: 3px;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    border: 3px solid black;
+    border: 3px groove #1c2833;
+}
+
+.condensed:hover{
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.condensed:hover > *{
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.expanded:hover{
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.expanded:hover > *{
+    background-color: rgba(0, 0, 0, 0.0);
 }
 
 .expanded{
     margin: 3px;
     display: flex;
-    border: 3px solid black;
+    flex-direction: column;
+    border: 3px groove #1c2833;
+    background-color: #c1c0b9;
+}
+
+.expanded > *{
+    background-color: #c1c0b9;
 }
