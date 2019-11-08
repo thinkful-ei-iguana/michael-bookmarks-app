@@ -62,10 +62,10 @@ const renderBookmarkElement = function(bookmark){
         <section class="currentBookmark" id="${bookmark.id}">
           <div class="expanded">
             <h3>${bookmark.title}</h3>
-            <a href="${bookmark.url}" target="_blank">Visit Site</a>
+            <button data-href="${bookmark.url}" class="linkButton">Visit Site</button>
             <div>${convertToStars(bookmark.rating)}</div>
             <p>${bookmark.desc}</p>
-            <div><button id="delete">Delete</button></div>
+            <button class="delete">Delete</button>
           </div>
         </section>
       `;
@@ -95,17 +95,17 @@ const bookmarkString = function(bookmarks){
 //converts numeric rating into star rating
 const convertToStars = function(num){
   switch (num){
-    case 5:
-      return '★★★★★';
-    case 4:
-      return '★★★★☆';
-    case 3:
-      return '★★★☆☆';
-    case 2:
-      return '★★☆☆☆';
-    case 1:
-      return '★☆☆☆☆';
-    };
+  case 5:
+    return '★★★★★';
+  case 4:
+    return '★★★★☆';
+  case 3:
+    return '★★★☆☆';
+  case 2:
+    return '★★☆☆☆';
+  case 1:
+    return '★☆☆☆☆';
+  }
 };
 
 // error rendering
@@ -156,6 +156,7 @@ const bindEventListeners = function () {
   changeExpandedState();
   getBookmarkId();
   handleCloseError();
+  linkButton();
 };
 
 const handleCloseError = function(){
@@ -227,8 +228,18 @@ const changeExpandedState = function(){
   });
 };
 
+const linkButton = function(){
+  $('.listArea').on('click', '.linkButton', function(event){
+    event.stopPropagation();
+    let link = $(event.currentTarget).data('href');
+    window.open(link, '_blank');
+  });
+};
+
+
 const deletePress = function(){
-  $('.listArea').on('click','#delete', function(event){
+  $('.listArea').on('click','.delete', function(event){
+    event.stopPropagation();
     let id = getBookmarkId(event.currentTarget);
     api.deleteBookmark(id)
       .then(() => {
