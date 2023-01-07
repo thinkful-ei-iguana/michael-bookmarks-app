@@ -7,7 +7,7 @@
     "css-loader": "^3.2.0",
     "cuid": "^2.1.6",
     "file-loader": "^4.2.0",
-    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "^5.5.0",
     "jquery": "^3.4.1",
     "style-loader": "^1.0.0",
     "webpack": "^4.41.2",
